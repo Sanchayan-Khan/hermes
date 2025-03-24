@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 33% 97%;
+    --foreground: 36 10% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 36 10% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 36 10% 15%;
+
+    --primary: 36 92% 34%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 36 33% 94%;
+    --secondary-foreground: 36 10% 15%;
+
+    --muted: 36 33% 94%;
+    --muted-foreground: 36 5% 45%;
+
+    --accent: 36 33% 94%;
+    --accent-foreground: 36 10% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 36 70% 90%;
+    --input: 36 70% 90%;
+    --ring: 36 92% 34%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 36 15% 15%;
+    --foreground: 36 10% 95%;
+
+    --card: 36 15% 10%;
+    --card-foreground: 36 10% 95%;
+
+    --popover: 36 15% 10%;
+    --popover-foreground: 36 10% 95%;
+
+    --primary: 36 92% 34%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 36 15% 25%;
+    --secondary-foreground: 36 10% 95%;
+
+    --muted: 36 15% 25%;
+    --muted-foreground: 36 5% 65%;
+
+    --accent: 36 15% 25%;
+    --accent-foreground: 36 10% 95%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 36 15% 30%;
+    --input: 36 15% 30%;
+    --ring: 36 92% 34%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom styles for the scrapbook aesthetic */
+.perspective {
+  perspective: 1000px;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
