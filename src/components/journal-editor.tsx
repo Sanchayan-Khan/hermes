@@ -1,13 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
+// import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { Calendar, MapPin, ImageIcon, PenTool, Save, X, Plus, Tag } from "lucide-react"
+import { Calendar, MapPin, PenTool, Save, X} from "lucide-react"
 
 interface JournalEntry {
   title: string
@@ -50,25 +50,25 @@ export default function JournalEditor({ entry, onSave, onCancel }: JournalEditor
     })
   }
 
-  const handleAddImage = () => {
-    const placeholderImage = "/placeholder.svg?height=400&width=600"
-    setImages([...images, placeholderImage])
-  }
+  // const handleAddImage = () => {
+  //   const placeholderImage = "/placeholder.svg?height=400&width=600"
+  //   setImages([...images, placeholderImage])
+  // }
 
-  const handleRemoveImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index))
-  }
+  // const handleRemoveImage = (index: number) => {
+  //   setImages(images.filter((_, i) => i !== index))
+  // }
 
-  const handleAddTag = () => {
-    if (newTag && !tags.includes(newTag)) {
-      setTags([...tags, newTag])
-      setNewTag("")
-    }
-  }
+  // const handleAddTag = () => {
+  //   if (newTag && !tags.includes(newTag)) {
+  //     setTags([...tags, newTag])
+  //     setNewTag("")
+  //   }
+  // }
 
-  const handleRemoveTag = (tag: string) => {
-    setTags(tags.filter((t) => t !== tag))
-  }
+  // const handleRemoveTag = (tag: string) => {
+  //   setTags(tags.filter((t) => t !== tag))
+  // }
 
   return (
     <Card className="border-amber-100 dark:border-amber-900/50 dark:bg-amber-950/20">
