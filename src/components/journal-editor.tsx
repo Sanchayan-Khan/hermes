@@ -32,7 +32,10 @@ export default function JournalEditor({ entry, onSave, onCancel }: JournalEditor
   const [images, setImages] = useState<string[]>(entry?.images || [])
   const [tags, setTags] = useState<string[]>(entry?.tags || [])
   const [newTag, setNewTag] = useState("")
-
+  setImages(entry?.images || [])
+  setTags(entry?.tags || [])
+  console.log(newTag)
+  setNewTag("")  
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
     return new Date(dateString).toLocaleDateString("en-US", options)
