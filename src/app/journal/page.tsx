@@ -7,8 +7,19 @@ import { Plus } from "lucide-react"
 import JournalEntry from "@/components/journal-entry"
 import JournalEditor from "@/components/journal-editor"
 
+// Define a type for journal entries
+interface JournalEntryType {
+  id: string
+  title: string
+  date: string
+  location: string
+  content: string
+  images: string[]
+  tags: string[]
+}
+
 // Sample journal entries data
-const sampleEntries = [
+const sampleEntries: JournalEntryType[] = [
   {
     id: "1",
     title: "Paris Adventure",
@@ -39,7 +50,7 @@ const sampleEntries = [
 ]
 
 export default function JournalPage() {
-  const [entries, setEntries] = useState(sampleEntries)
+  const [entries, setEntries] = useState<JournalEntryType[]>(sampleEntries)
   const [isCreating, setIsCreating] = useState(false)
   const [selectedEntry, setSelectedEntry] = useState<string | null>(null)
 
@@ -60,16 +71,21 @@ export default function JournalPage() {
     }
   }
 
-  const handleSaveEntry = (entry: any) => {
+  const handleSaveEntry = (entry: Partial<JournalEntryType>) => {
     if (selectedEntry) {
       // Update existing entry
       setEntries(entries.map((e) => (e.id === selectedEntry ? { ...e, ...entry } : e)))
       setSelectedEntry(null)
     } else if (isCreating) {
       // Create new entry
-      const newEntry = {
+      const newEntry: JournalEntryType = {
         id: Date.now().toString(),
-        ...entry,
+        title: entry.title || "Untitled",
+        date: entry.date || new Date().toLocaleDateString(),
+        location: entry.location || "Unknown",
+        content: entry.content || "",
+        images: entry.images || [],
+        tags: entry.tags || [],
       }
       setEntries([newEntry, ...entries])
       setIsCreating(false)
@@ -153,4 +169,3 @@ export default function JournalPage() {
     </div>
   )
 }
-

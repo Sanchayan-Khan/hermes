@@ -9,9 +9,18 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Calendar, MapPin, ImageIcon, PenTool, Save, X, Plus, Tag } from "lucide-react"
 
+interface JournalEntry {
+  title: string
+  date: string
+  location: string
+  content: string
+  images: string[]
+  tags: string[]
+}
+
 interface JournalEditorProps {
-  entry?: any
-  onSave: (entry: any) => void
+  entry?: JournalEntry
+  onSave: (entry: JournalEntry) => void
   onCancel: () => void
 }
 
@@ -42,7 +51,6 @@ export default function JournalEditor({ entry, onSave, onCancel }: JournalEditor
   }
 
   const handleAddImage = () => {
-    // In a real app, this would open a file picker
     const placeholderImage = "/placeholder.svg?height=400&width=600"
     setImages([...images, placeholderImage])
   }
@@ -134,84 +142,6 @@ export default function JournalEditor({ entry, onSave, onCancel }: JournalEditor
             className="min-h-32 border-amber-200 dark:border-amber-800"
           />
         </div>
-
-        <div className="space-y-2">
-          <Label className="flex items-center gap-1">
-            <ImageIcon className="w-4 h-4" />
-            Photos
-          </Label>
-
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-            {images.map((image, index) => (
-              <div key={index} className="relative group">
-                <Image
-                  src={image || "/placeholder.svg"}
-                  width={150}
-                  height={150}
-                  alt={`Journal image ${index + 1}`}
-                  className="object-cover w-full h-24 rounded-md"
-                />
-                <button
-                  onClick={() => handleRemoveImage(index)}
-                  className="absolute top-1 right-1 p-1 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X className="w-4 h-4 text-red-500" />
-                </button>
-              </div>
-            ))}
-
-            <button
-              onClick={handleAddImage}
-              className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed rounded-md border-amber-200 text-amber-500 hover:bg-amber-50 dark:border-amber-800 dark:hover:bg-amber-900/30"
-            >
-              <Plus className="w-6 h-6" />
-              <span className="text-xs">Add Photo</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label className="flex items-center gap-1">
-            <Tag className="w-4 h-4" />
-            Tags
-          </Label>
-
-          <div className="flex flex-wrap gap-2 mb-2">
-            {tags.map((tag) => (
-              <div
-                key={tag}
-                className="flex items-center px-2 py-1 text-xs bg-amber-100 rounded-full text-amber-800 dark:bg-amber-900/50 dark:text-amber-200"
-              >
-                {tag}
-                <button onClick={() => handleRemoveTag(tag)} className="ml-1">
-                  <X className="w-3 h-3" />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex gap-2">
-            <Input
-              value={newTag}
-              onChange={(e) => setNewTag(e.target.value)}
-              placeholder="Add a tag"
-              className="border-amber-200 dark:border-amber-800"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault()
-                  handleAddTag()
-                }
-              }}
-            />
-            <Button
-              onClick={handleAddTag}
-              variant="outline"
-              className="border-amber-200 text-amber-700 hover:bg-amber-100 dark:border-amber-800 dark:text-amber-200 dark:hover:bg-amber-900/30"
-            >
-              Add
-            </Button>
-          </div>
-        </div>
       </CardContent>
 
       <CardFooter>
@@ -223,4 +153,3 @@ export default function JournalEditor({ entry, onSave, onCancel }: JournalEditor
     </Card>
   )
 }
-
