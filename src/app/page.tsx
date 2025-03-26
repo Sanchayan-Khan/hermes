@@ -115,14 +115,6 @@ export default function Home() {
           description="Discover historical insights, folklore, and local legends from your destinations."
           href="/lores"
         />
-        <FeatureCard
-          icon={
-            <MapPin className="w-6 h-6 text-amber-600 dark:text-amber-300" />
-          }
-          title="Local Lores"
-          description="Discover historical insights, folklore, and local legends from your destinations."
-          href="/login"
-        />
       </div>
     </div>
   );
