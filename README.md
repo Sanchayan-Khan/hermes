@@ -31,7 +31,7 @@ This project is built with:
 ### Prerequisites
 
 - Node.js 18.x or higher
-- pnpm
+- npm
 
 ### Installation
 
@@ -43,12 +43,12 @@ cd hermes
 
 2. Install dependencies
 ```sh
-pnpm install
+npm install
 ```
 
 3. Start the development server
 ```sh
-pnpm dev
+npm run dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
@@ -88,14 +88,14 @@ Hermes uses a custom amber/brown theme with a vintage travel aesthetic. The UI i
 
 ```sh
 # Development
-pnpm dev        # Start development server
+npm run dev        # Start development server
 
 # Production
-pnpm build      # Build for production
-pnpm start      # Start production server
+npm run build      # Build for production
+npm start          # Start production server
 
 # Maintenance
-pnpm lint       # Run ESLint
+npm run lint       # Run ESLint
 ```
 
 ## Contributing
