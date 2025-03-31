@@ -39,14 +39,14 @@ export default function Home() {
               Get Started
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            {/* <Button
+            <Button
               variant="outline"
               size="lg"
               className="border-amber-600 text-amber-300 hover:bg-amber-800/50 hover:text-amber-200 font-medium shadow-md"
               onClick={() => handleNavigation("/journal")}
             >
               Explore Features
-            </Button> */}
+            </Button>
           </div>
         </div>
         <div className="relative">
