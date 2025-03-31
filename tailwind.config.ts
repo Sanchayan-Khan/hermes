@@ -1,7 +1,7 @@
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
 
 const config = {
-  darkMode: "class",
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -68,17 +68,37 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        fadeIn: {
+          from: { opacity: "0", transform: "translateY(10px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        pulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
+        ping: {
+          "75%, 100%": {
+            transform: "scale(1.5)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        fadeIn: "fadeIn 0.6s ease-out forwards",
+        pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        ping: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
       },
       fontFamily: {
-        serif: ["Georgia", "Cambria", "Times New Roman", "Times", "serif"],
+        sans: ["var(--font-montserrat)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-montserrat)", "Trebuchet MS", "sans-serif"],
+        handwriting: ['"Segoe Print"', '"Bradley Hand"', '"Comic Sans MS"', "cursive"],
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+} satisfies Config
 
-export default config;
+export default config
+

@@ -1,0 +1,404 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Send, ImageIcon, Stamp, Type, PenTool, MapPin, RotateCcw, Download, Mail } from "lucide-react"
+import PageHeader from "@/components/page-header"
+
+export default function PostcardPage() {
+  const [postcardFront, setPostcardFront] = useState("/placeholder.svg?height=400&width=600")
+  const [message, setMessage] = useState("")
+  const [recipient, setRecipient] = useState("")
+  const [sender, setSender] = useState("")
+  const [location, setLocation] = useState("")
+  const [font, setFont] = useState("handwritten")
+  const [stamp, setStamp] = useState("1")
+  const [isFlipped, setIsFlipped] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    // Add a small delay to trigger animations
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped)
+  }
+
+  const handleSendPostcard = () => {
+    // In a real app, this would send the postcard
+    alert("Postcard sent successfully!")
+  }
+
+  const handleDownload = () => {
+    // In a real app, this would download the postcard
+    alert("Postcard downloaded!")
+  }
+
+  const fontClasses = {
+    handwritten: "font-handwriting",
+    modern: "font-sans",
+    vintage: "font-display",
+  }
+
+  return (
+    <div className="container px-4 py-8 mx-auto">
+      <PageHeader title="Create a Postcard" description="Design and send beautiful postcards to friends and family" />
+
+      <div className="grid gap-8 lg:grid-cols-2">
+        <div
+          className={`transition-all duration-500 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+        >
+          <div className="relative mb-12">
+            {/* Postcard container with perspective */}
+            <div className="perspective w-full max-w-md mx-auto">
+              {/* Postcard with 3D flip effect */}
+              <div
+                className={`relative transition-all duration-700 w-full h-[300px] preserve-3d ${isFlipped ? "rotate-y-180" : ""}`}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                {/* Front of postcard */}
+                <div
+                  className="absolute inset-0 backface-hidden rounded-lg overflow-hidden border-2 border-amber-600/30 shadow-lg"
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={postcardFront || "/placeholder.svg"}
+                      alt="Postcard front"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+                    {/* Decorative elements */}
+                    <div className="absolute top-3 right-3 w-16 h-16 border-2 border-amber-300/30 rounded-full flex items-center justify-center">
+                      <div className="text-xs text-amber-100 font-handwriting text-center">
+                        TRAVEL
+                        <br />
+                        MEMORIES
+                      </div>
+                    </div>
+
+                    <div className="absolute bottom-0 left-0 right-0 p-3 text-base font-medium text-white bg-black/40 backdrop-blur-sm">
+                      {location || "Add a location"}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Back of postcard */}
+                <div
+                  className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg overflow-hidden border-2 border-amber-600/30 shadow-lg bg-[#2a2522]"
+                  style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+                >
+                  <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;4&quot; height=&quot;4&quot; viewBox=&quot;0 0 4 4&quot;%3E%3Cpath fill=&quot;%239C8362&quot; fillOpacity=&quot;0.2&quot; d=&quot;M1 3h1v1H1V3zm2-2h1v1H3V1z&quot;%3E%3C/path%3E%3C/svg%3E')] opacity-30"></div>
+                  <div className="relative p-4 h-full">
+                    <div className="absolute top-4 right-4">
+                      {stamp === "1" && (
+                        <div className="w-16 h-16 p-1 border border-amber-500/50 rounded-sm shadow-inner">
+                          <div className="flex items-center justify-center w-full h-full text-xs text-center bg-amber-800/50 text-amber-100 font-handwriting">
+                            STAMP
+                          </div>
+                        </div>
+                      )}
+                      {stamp === "2" && (
+                        <div className="w-16 h-16 p-1 border border-amber-500/50 rounded-sm shadow-inner">
+                          <div className="flex items-center justify-center w-full h-full text-xs text-center bg-amber-700/50 text-amber-100 font-handwriting">
+                            TRAVEL
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid h-full grid-cols-2 gap-4">
+                      <div className="flex flex-col justify-between">
+                        <div
+                          className={`text-base ${fontClasses[font as keyof typeof fontClasses]} text-amber-100 leading-relaxed`}
+                        >
+                          {message || "Your message will appear here..."}
+                        </div>
+                        <div className="text-base font-medium text-amber-100 mt-4">
+                          {sender ? `From: ${sender}` : "From: Your Name"}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col justify-end pl-4 border-l border-amber-500/50">
+                        <div className="mb-4 text-base text-amber-100">
+                          {recipient ? `To: ${recipient}` : "To: Recipient Name"}
+                        </div>
+                        <div className="text-sm text-amber-200 font-handwriting">
+                          {location ? `Sent from ${location}` : "Location"}
+                        </div>
+                        <div className="text-sm text-amber-200 font-handwriting">{new Date().toLocaleDateString()}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Flip button */}
+            <div className="flex justify-center mt-4">
+              <Button
+                onClick={handleFlip}
+                variant="outline"
+                className="border-amber-600/50 text-amber-200 hover:bg-amber-800/50 hover:text-amber-100 shadow-md"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                {isFlipped ? "View Front" : "View Back"}
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex gap-2 mt-8">
+            <Button
+              onClick={handleSendPostcard}
+              className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
+            >
+              <Send className="w-4 h-4 mr-2" />
+              Send Postcard
+            </Button>
+            <Button
+              onClick={handleDownload}
+              variant="outline"
+              className="border-amber-600/50 text-amber-200 hover:bg-amber-800/50 hover:text-amber-100 shadow-md"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download
+            </Button>
+          </div>
+        </div>
+
+        <div
+          className={`transition-all duration-500 delay-100 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+        >
+          <Tabs defaultValue="content" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-6 bg-amber-900/30">
+              <TabsTrigger
+                value="content"
+                className="data-[state=active]:bg-amber-700 data-[state=active]:text-amber-100 data-[state=active]:shadow-inner font-medium"
+              >
+                Content
+              </TabsTrigger>
+              <TabsTrigger
+                value="design"
+                className="data-[state=active]:bg-amber-700 data-[state=active]:text-amber-100 data-[state=active]:shadow-inner font-medium"
+              >
+                Design
+              </TabsTrigger>
+              <TabsTrigger
+                value="recipient"
+                className="data-[state=active]:bg-amber-700 data-[state=active]:text-amber-100 data-[state=active]:shadow-inner font-medium"
+              >
+                Recipient
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="content" className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="message" className="flex items-center gap-1 text-amber-200">
+                  <PenTool className="w-4 h-4" />
+                  Message
+                </Label>
+                <Textarea
+                  id="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Write your message here..."
+                  className="min-h-32 border-amber-700/50 bg-amber-900/20 text-amber-100 placeholder:text-amber-500/50 font-handwriting"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="location" className="flex items-center gap-1 text-amber-200">
+                  <MapPin className="w-4 h-4" />
+                  Location
+                </Label>
+                <Input
+                  id="location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Paris, France"
+                  className="border-amber-700/50 bg-amber-900/20 text-amber-100 placeholder:text-amber-500/50 font-handwriting"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="sender" className="flex items-center gap-1 text-amber-200">
+                  <Mail className="w-4 h-4" />
+                  From
+                </Label>
+                <Input
+                  id="sender"
+                  value={sender}
+                  onChange={(e) => setSender(e.target.value)}
+                  placeholder="Your Name"
+                  className="border-amber-700/50 bg-amber-900/20 text-amber-100 placeholder:text-amber-500/50 font-handwriting"
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="design" className="space-y-4">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-1 text-amber-200">
+                  <ImageIcon className="w-4 h-4" />
+                  Background Image
+                </Label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    onClick={() => setPostcardFront("/placeholder.svg?height=400&width=600")}
+                    className="overflow-hidden border-2 rounded-md aspect-video border-amber-600/30 hover:border-amber-500 shadow-md hover:shadow-amber-700/20 transition-all"
+                  >
+                    <Image
+                      src="/placeholder.svg?height=400&width=600"
+                      width={100}
+                      height={60}
+                      alt="Background option 1"
+                      className="object-cover w-full h-full"
+                    />
+                  </button>
+                  <button
+                    onClick={() => setPostcardFront("/placeholder.svg?height=400&width=600")}
+                    className="overflow-hidden border-2 rounded-md aspect-video border-amber-600/30 hover:border-amber-500 shadow-md hover:shadow-amber-700/20 transition-all"
+                  >
+                    <Image
+                      src="/placeholder.svg?height=400&width=600"
+                      width={100}
+                      height={60}
+                      alt="Background option 2"
+                      className="object-cover w-full h-full"
+                    />
+                  </button>
+                  <button
+                    onClick={() => setPostcardFront("/placeholder.svg?height=400&width=600")}
+                    className="overflow-hidden border-2 rounded-md aspect-video border-amber-600/30 hover:border-amber-500 shadow-md hover:shadow-amber-700/20 transition-all"
+                  >
+                    <Image
+                      src="/placeholder.svg?height=400&width=600"
+                      width={100}
+                      height={60}
+                      alt="Background option 3"
+                      className="object-cover w-full h-full"
+                    />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="font" className="flex items-center gap-1 text-amber-200">
+                  <Type className="w-4 h-4" />
+                  Font Style
+                </Label>
+                <Select value={font} onValueChange={setFont}>
+                  <SelectTrigger className="border-amber-700/50 bg-amber-900/20 text-amber-100">
+                    <SelectValue placeholder="Select a font style" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#2a2522] border-amber-700/50">
+                    <SelectItem
+                      value="handwritten"
+                      className="text-amber-100 focus:bg-amber-800/50 focus:text-amber-100"
+                    >
+                      Handwritten
+                    </SelectItem>
+                    <SelectItem value="modern" className="text-amber-100 focus:bg-amber-800/50 focus:text-amber-100">
+                      Modern
+                    </SelectItem>
+                    <SelectItem value="vintage" className="text-amber-100 focus:bg-amber-800/50 focus:text-amber-100">
+                      Vintage
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="stamp" className="flex items-center gap-1 text-amber-200">
+                  <Stamp className="w-4 h-4" />
+                  Stamp
+                </Label>
+                <Select value={stamp} onValueChange={setStamp}>
+                  <SelectTrigger className="border-amber-700/50 bg-amber-900/20 text-amber-100">
+                    <SelectValue placeholder="Select a stamp" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#2a2522] border-amber-700/50">
+                    <SelectItem value="1" className="text-amber-100 focus:bg-amber-800/50 focus:text-amber-100">
+                      Classic Stamp
+                    </SelectItem>
+                    <SelectItem value="2" className="text-amber-100 focus:bg-amber-800/50 focus:text-amber-100">
+                      Travel Stamp
+                    </SelectItem>
+                    <SelectItem value="3" className="text-amber-100 focus:bg-amber-800/50 focus:text-amber-100">
+                      No Stamp
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="recipient" className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="recipient" className="flex items-center gap-1 text-amber-200">
+                  <Mail className="w-4 h-4" />
+                  Recipient
+                </Label>
+                <Input
+                  id="recipient"
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                  placeholder="Recipient's Name"
+                  className="border-amber-700/50 bg-amber-900/20 text-amber-100 placeholder:text-amber-500/50 font-handwriting"
+                />
+              </div>
+
+              <div className="p-4 border rounded-md border-amber-600/30 bg-amber-900/20 shadow-inner">
+                <h4 className="mb-2 font-medium text-amber-100 font-display">Delivery Options</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <input type="radio" id="digital" name="delivery" className="mr-2 accent-amber-500" defaultChecked />
+                    <Label htmlFor="digital" className="text-sm text-amber-200">
+                      Digital Delivery (Email)
+                    </Label>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="radio" id="print" name="delivery" className="mr-2 accent-amber-500" />
+                    <Label htmlFor="print" className="text-sm text-amber-200">
+                      Print & Mail (Additional fee)
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-md border-amber-600/30 bg-amber-900/20 shadow-inner">
+                <h4 className="mb-2 font-medium text-amber-100 font-display">Schedule Delivery</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <input type="radio" id="now" name="schedule" className="mr-2 accent-amber-500" defaultChecked />
+                    <Label htmlFor="now" className="text-sm text-amber-200">
+                      Send Now
+                    </Label>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="radio" id="later" name="schedule" className="mr-2 accent-amber-500" />
+                    <Label htmlFor="later" className="text-sm text-amber-200">
+                      Schedule for Later
+                    </Label>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </div>
+  )
+}
+
