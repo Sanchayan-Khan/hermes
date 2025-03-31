@@ -1,41 +1,76 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowRight, Mail, Lock, User } from "lucide-react"
-import { useLoadingContext } from "@/components/loading-provider"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowRight, Mail, Lock, User } from "lucide-react";
+import { useLoadingContext } from "@/components/loading-provider";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const { setIsLoading } = useLoadingContext()
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const { setIsLoading } = useLoadingContext();
+  const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate login
-    setTimeout(() => {
-      router.push("/journal")
-    }, 800)
-  }
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    setIsLoading(true);
+    try {
+      const response = await fetch("http://localhost:4000/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          identifier: email, // Maps the input to the identifier field
+          password: password, // Password entered by the user
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert("Login successful!");
+        router.push("/"); // Redirect to the dashboard or home page
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred during login. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate signup
-    setTimeout(() => {
-      router.push("/journal")
-    }, 800)
-  }
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    setIsLoading(true);
+    try {
+      const response = await fetch("http://localhost:4000/user/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email, // Email entered by the user
+          hash_password: password, // Password entered by the user
+          username: name, // Full name entered by the user
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert("Signup successful!");
+        router.push("/"); // Redirect to the dashboard or home page
+      } else {
+        alert(data.message || "Signup failed");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("An error occurred during signup. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="container relative flex flex-col items-center justify-center min-h-screen px-4 mx-auto">
@@ -55,7 +90,9 @@ export default function LoginPage() {
 
       <div className="absolute bottom-20 right-1/4 rotate-[5deg]">
         <div className="w-24 h-16 bg-amber-900/30 border border-amber-700/30 rounded-sm shadow-inner flex items-center justify-center backdrop-blur-sm">
-          <div className="text-xs text-amber-300 font-handwriting font-medium">TRAVEL TICKET</div>
+          <div className="text-xs text-amber-300 font-handwriting font-medium">
+            TRAVEL TICKET
+          </div>
         </div>
       </div>
 
@@ -101,18 +138,18 @@ export default function LoginPage() {
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-amber-200">
-                    Email
+                  <Label htmlFor="identifier" className="text-amber-200">
+                    Username/Email
                   </Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-2.5 h-5 w-5 text-amber-500" />
+                    <User className="absolute left-3 top-2.5 h-5 w-5 text-amber-500" />
                     <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
+                      id="identifier"
+                      type="text"
+                      placeholder="Enter your username or email"
                       className="pl-10 border-amber-700/50 bg-amber-900/20 text-amber-100 placeholder:text-amber-500/50"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value)} // Maps to the `email` state
                       required
                     />
                   </div>
@@ -123,7 +160,10 @@ export default function LoginPage() {
                     <Label htmlFor="password" className="text-amber-200">
                       Password
                     </Label>
-                    <Link href="#" className="text-xs text-amber-500 hover:text-amber-400 hover:underline font-medium">
+                    <Link
+                      href="#"
+                      className="text-xs text-amber-500 hover:text-amber-400 hover:underline font-medium"
+                    >
                       Forgot password?
                     </Link>
                   </div>
@@ -221,11 +261,17 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-amber-300 font-handwriting">
               By continuing, you agree to our{" "}
-              <Link href="#" className="text-amber-500 hover:text-amber-400 hover:underline font-medium">
+              <Link
+                href="#"
+                className="text-amber-500 hover:text-amber-400 hover:underline font-medium"
+              >
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link href="#" className="text-amber-500 hover:text-amber-400 hover:underline font-medium">
+              <Link
+                href="#"
+                className="text-amber-500 hover:text-amber-400 hover:underline font-medium"
+              >
                 Privacy Policy
               </Link>
             </p>
@@ -233,6 +279,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
