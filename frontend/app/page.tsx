@@ -39,14 +39,6 @@ export default function Home() {
               Get Started
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-amber-600 text-amber-300 hover:bg-amber-800/50 hover:text-amber-200 font-medium shadow-md"
-              onClick={() => handleNavigation("/journal")}
-            >
-              Explore Features
-            </Button>
           </div>
         </div>
         <div className="relative">
@@ -54,7 +46,7 @@ export default function Home() {
             <div className="space-y-4">
               <div className="relative p-2 bg-[#1e1916] shadow-md rotate-[-4deg] border border-amber-700/30">
                 <Image
-                  src="/placeholder.svg?height=300&width=250"
+                  src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.worldatlas.com%2Farticles%2Fhow-tall-is-the-eiffel-tower.html&psig=AOvVaw137UTbDfDQGtdfTvpNSaf7&ust=1743604622683000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLDels6Ht4wDFQAAAAAdAAAAABAE"
                   width={250}
                   height={300}
                   alt="Travel photo"
@@ -86,14 +78,14 @@ export default function Home() {
               </div>
               <div className="relative p-2 bg-[#1e1916] shadow-md rotate-[-2deg] border border-amber-700/30">
                 <Image
-                  src="/placeholder.svg?height=300&width=250"
+                  src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fsimple.wikipedia.org%2Fwiki%2FLos_Angeles&psig=AOvVaw11hctx4OkGt6TvRYGBcZ-A&ust=1743604725962000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjfqfmHt4wDFQAAAAAdAAAAABAE"
                   width={250}
                   height={300}
                   alt="Travel photo"
                   className="object-cover w-full h-auto"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-2 text-xs font-medium text-center bg-[#1e1916]/80 text-amber-200 font-handwriting">
-                  Kyoto, Japan
+                  Los Angeles, USA
                 </div>
               </div>
             </div>
