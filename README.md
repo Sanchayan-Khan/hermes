@@ -1,6 +1,6 @@
 # Hermes - Travel Journal & Postcards
 
-Hermes is a beautiful web application for documenting your travel experiences through digital journals, custom postcards, and exploration of local lore.
+Hermes is an attractive web application for documenting your travel experiences through digital journals, custom postcards, and exploration of local lore.
 
 ## Features
 
@@ -16,7 +16,7 @@ Discover historical insights, folklore, and local legends from around the world.
 ### 👤 User Profiles
 Track your travel activity, including countries visited, postcards sent, and journal entries created. View your journey statistics and travel achievements.
 
-## Technologies
+## Tech Stack
 
 This project is built with:
 
