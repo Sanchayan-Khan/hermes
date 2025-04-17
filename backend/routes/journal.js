@@ -16,6 +16,8 @@ router.post("/", authenticateToken, async (req, res) => {
       });
     }
 
+    console.log(req.body);
+
     const newJournal = await Journal.create({
       title,
       date,
@@ -28,6 +30,8 @@ router.post("/", authenticateToken, async (req, res) => {
     const countryPart =
       date && location ? location.split(",").pop().trim() : null;
 
+    console.log(countryPart);
+
     if (countryPart) {
       const user = await User.findByPk(req.user.id);
       if (!user.countriesVisited.includes(countryPart)) {
@@ -35,6 +39,7 @@ router.post("/", authenticateToken, async (req, res) => {
         await user.save();
       }
     }
+    console.log(newJournal);
     res.status(201).json(newJournal);
   } catch (err) {
     console.error(err);
