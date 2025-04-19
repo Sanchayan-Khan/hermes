@@ -6,8 +6,10 @@ const authRoutes = require("./routes/auth"); // your existing auth routes
 const journalRoutes = require("./routes/journal"); // our new journal routes
 const userRoutes = require("./routes/user");
 const postcardRoutes = require("./routes/postcard");
+const loreRoutes = require("./routes/lore");
 const User = require("./models/User");
 const Postcard = require("./models/Postcard");
+const Lore = require("./models/Lore");
 require("dotenv").config();
 
 const app = express();
@@ -25,6 +27,7 @@ app.use("/", authRoutes);
 app.use("/journals", journalRoutes);
 app.use("/user", userRoutes);
 app.use("/postcards", postcardRoutes);
+app.use("/lores", loreRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Journals and Authentication API!");
@@ -34,6 +37,8 @@ User.hasMany(Postcard, { as: "sentPostcards", foreignKey: "senderId" });
 User.hasMany(Postcard, { as: "receivedPostcards", foreignKey: "recipientId" });
 Postcard.belongsTo(User, { as: "sender", foreignKey: "senderId" });
 Postcard.belongsTo(User, { as: "recipient", foreignKey: "recipientId" });
+User.hasMany(Lore, { foreignKey: "userId" });
+Lore.belongsTo(User, { foreignKey: "userId" });
 
 // Connect to the database and start the server
 connectDB().then(() => {

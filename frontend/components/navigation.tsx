@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Book, Mail, MapPin, User } from "lucide-react";
@@ -12,15 +12,18 @@ export default function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
   const { setIsLoading } = useLoadingContext();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, []);
 
   // Don't show navigation on login page
   if (pathname === "/login") return null;
 
   const handleNavigation = (href: string) => {
-    if (!token) {
+    if (!isAuthenticated && href !== "/login") {
       router.push("/login"); // Redirect to login if not authenticated
       return;
     }
@@ -77,7 +80,7 @@ export default function Navigation() {
             <MapPin className="w-4 h-4 mr-1 sm:mr-2" />
             <span className="hidden sm:inline font-medium">Lores</span>
           </NavLink>
-          {token ? (
+          {isAuthenticated ? (
             <NavLink
               href="/profile"
               active={pathname === "/profile"}
