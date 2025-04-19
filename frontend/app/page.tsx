@@ -6,12 +6,26 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Book, Mail, ArrowRight } from "lucide-react";
 import { useLoadingContext } from "@/components/loading-provider";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { setIsLoading } = useLoadingContext();
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Check if the user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleNavigation = (href: string) => {
+    if (!isLoggedIn) {
+      router.push("/login"); // Redirect to login if not authenticated
+      return;
+    }
     setIsLoading(true);
     router.push(href);
   };
@@ -31,14 +45,16 @@ export default function Home() {
             local stories from around the world.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row">
-            <Button
-              size="lg"
-              className="bg-amber-600 hover:bg-amber-700 text-white font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
-              onClick={() => handleNavigation("/login")}
-            >
-              Get Started
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            {!isLoggedIn && (
+              <Button
+                size="lg"
+                className="bg-amber-600 hover:bg-amber-700 text-white font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all"
+                onClick={() => handleNavigation("/login")}
+              >
+                Get Started
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            )}
           </div>
         </div>
         <div className="relative">
@@ -46,14 +62,14 @@ export default function Home() {
             <div className="space-y-4">
               <div className="relative p-2 bg-[#1e1916] shadow-md rotate-[-4deg] border border-amber-700/30">
                 <Image
-                  src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.worldatlas.com%2Farticles%2Fhow-tall-is-the-eiffel-tower.html&psig=AOvVaw137UTbDfDQGtdfTvpNSaf7&ust=1743604622683000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLDels6Ht4wDFQAAAAAdAAAAABAE"
+                  src="https://images.unsplash.com/photo-1547393027-a632f1004ad6?q=80&w=1940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   width={250}
                   height={300}
                   alt="Travel photo"
                   className="object-cover w-full h-auto"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-2 text-xs font-medium text-center bg-[#1e1916]/80 text-amber-200 font-handwriting">
-                  Paris, France
+                  Amalfi Coast, Italy
                 </div>
               </div>
               <div className="p-4 bg-amber-800/40 shadow-md rotate-[2deg] backdrop-blur-sm border border-amber-700/30">
@@ -78,14 +94,14 @@ export default function Home() {
               </div>
               <div className="relative p-2 bg-[#1e1916] shadow-md rotate-[-2deg] border border-amber-700/30">
                 <Image
-                  src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fsimple.wikipedia.org%2Fwiki%2FLos_Angeles&psig=AOvVaw11hctx4OkGt6TvRYGBcZ-A&ust=1743604725962000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNjfqfmHt4wDFQAAAAAdAAAAABAE"
+                  src="https://images.unsplash.com/photo-1719244376100-4b342f665d07?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   width={250}
                   height={300}
                   alt="Travel photo"
                   className="object-cover w-full h-auto"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-2 text-xs font-medium text-center bg-[#1e1916]/80 text-amber-200 font-handwriting">
-                  Los Angeles, USA
+                  Iguazu Falls, Argentina
                 </div>
               </div>
             </div>
@@ -134,6 +150,11 @@ function FeatureCard({
   const router = useRouter();
 
   const handleNavigation = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login"); // Redirect to login if not authenticated
+      return;
+    }
     setIsLoading(true);
     router.push(href);
   };
