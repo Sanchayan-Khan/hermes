@@ -5,10 +5,23 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import {
   BookOpen,
@@ -20,7 +33,6 @@ import {
 } from "lucide-react";
 import PageHeader from "@/components/page-header";
 
-// Define the type for userData
 interface UserData {
   name: string;
   username: string;
@@ -35,6 +47,7 @@ interface UserData {
   description?: string;
   location?: string;
   email?: string;
+  role: string;
 }
 
 export default function ProfilePage() {
@@ -47,6 +60,7 @@ export default function ProfilePage() {
     profilePicture: "",
     coverImage: "",
   });
+  const [selectedRole, setSelectedRole] = useState("Regular");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -73,6 +87,7 @@ export default function ProfilePage() {
         if (response.ok) {
           const data: UserData = await response.json(); // Explicitly type the response
           setUserData(data);
+          setSelectedRole(data.role || "Regular");
           setIsLoaded(true);
         } else {
           localStorage.removeItem("token"); // Clear invalid token
@@ -118,14 +133,17 @@ export default function ProfilePage() {
         return;
       }
 
-      const response = await fetch("/api/user", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(editForm),
-      });
+      const response = await fetch(
+        "https://backend-sample-9f8f.onrender.com/user",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(editForm),
+        }
+      );
 
       if (!response.ok) {
         const error = await response.json();
@@ -137,9 +155,47 @@ export default function ProfilePage() {
       setIsEditing(false);
       toast.success("Profile updated successfully!");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update profile");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update profile"
+      );
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleChangeRole = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+
+      const response = await fetch(
+        "https://backend-sample-9f8f.onrender.com/user/role",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ role: selectedRole }),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update role");
+      }
+
+      const updatedUser = await response.json();
+      setUserData({ ...userData!, ...updatedUser });
+      alert("Role updated successfully!");
+      toast.success("Role updated successfully!");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update role"
+      );
     }
   };
 
@@ -150,7 +206,7 @@ export default function ProfilePage() {
   return (
     <div className="container px-4 py-8 mx-auto">
       <PageHeader
-        title="My Profile"
+        title="Dashboard"
         description="Manage your account and track your travel memories"
         button={
           <div className="flex gap-2">
@@ -180,41 +236,57 @@ export default function ProfilePage() {
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="location" className="text-amber-200">Location</Label>
+              <Label htmlFor="location" className="text-amber-200">
+                Address
+              </Label>
               <Input
                 id="location"
                 value={editForm.location}
-                onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, location: e.target.value })
+                }
                 className="border-amber-700/50 bg-amber-900/20 text-amber-100"
                 placeholder="Where are you based?"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description" className="text-amber-200">Bio</Label>
+              <Label htmlFor="description" className="text-amber-200">
+                Bio
+              </Label>
               <Textarea
                 id="description"
                 value={editForm.description}
-                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, description: e.target.value })
+                }
                 className="min-h-[100px] border-amber-700/50 bg-amber-900/20 text-amber-100"
                 placeholder="Tell us about yourself..."
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="profilePicture" className="text-amber-200">Profile Picture URL</Label>
+              <Label htmlFor="profilePicture" className="text-amber-200">
+                Profile Picture URL
+              </Label>
               <Input
                 id="profilePicture"
                 value={editForm.profilePicture}
-                onChange={(e) => setEditForm({ ...editForm, profilePicture: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, profilePicture: e.target.value })
+                }
                 className="border-amber-700/50 bg-amber-900/20 text-amber-100"
                 placeholder="Enter image URL"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="coverImage" className="text-amber-200">Cover Image URL</Label>
+              <Label htmlFor="coverImage" className="text-amber-200">
+                Cover Image URL
+              </Label>
               <Input
                 id="coverImage"
                 value={editForm.coverImage}
-                onChange={(e) => setEditForm({ ...editForm, coverImage: e.target.value })}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, coverImage: e.target.value })
+                }
                 className="border-amber-700/50 bg-amber-900/20 text-amber-100"
                 placeholder="Enter image URL"
               />
@@ -277,6 +349,28 @@ export default function ProfilePage() {
           </div>
         </div>
 
+        <div className="mt-16">
+          {/* Bio Section */}
+          <h2 className="text-lg font-bold text-amber-100 mb-4">Bio</h2>
+          <p className="text-amber-300">
+            {userData.description || "No bio available."}
+          </p>
+        </div>
+
+        <div className="mt-8">
+          {/* Address and Email Section */}
+          <h2 className="text-lg font-bold text-amber-100 mb-4">Contact</h2>
+          <div className="space-y-2">
+            <p className="text-amber-300">
+              <strong>Address:</strong>{" "}
+              {userData.location || "No address available."}
+            </p>
+            <p className="text-amber-300">
+              <strong>Email:</strong> {userData.email || "No email available."}
+            </p>
+          </div>
+        </div>
+
         {/* Stats Cards */}
         <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <StatCard
@@ -299,6 +393,30 @@ export default function ProfilePage() {
             value={userData.stats.countriesVisited}
             label="Countries Visited"
           />
+        </div>
+      </div>
+      <div className="mt-8">
+        <h2 className="text-lg font-bold text-amber-100 mb-4">Change Role</h2>
+        <div className="flex items-center gap-4">
+          <Select
+            value={selectedRole}
+            onValueChange={(value) => setSelectedRole(value)}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Select a role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="REGULARS">Regular</SelectItem>
+              <SelectItem value="PROFESSIONALS">Professional</SelectItem>
+              <SelectItem value="NATIVES">Native</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            onClick={handleChangeRole}
+            className="bg-amber-600 hover:bg-amber-700 text-white"
+          >
+            Update Role
+          </Button>
         </div>
       </div>
     </div>

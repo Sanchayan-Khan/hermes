@@ -1,30 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Edit, Heart, MapPin, Calendar, Trash2 } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Edit, Heart, MapPin, Calendar, Trash2 } from "lucide-react";
 
 interface JournalEntryProps {
   entry: {
-    id: string
-    title: string
-    date: string
-    location: string
-    content: string
-    images: string[]
-    tags: string[]
-  }
-  onEdit: () => void
-  onDelete: () => void
+    id: string;
+    title: string;
+    date: string;
+    location: string;
+    content: string;
+    image: string; // Single image URL
+    tags: string[];
+  };
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-export default function JournalEntry({ entry, onEdit, onDelete }: JournalEntryProps) {
-  const [isFavorite, setIsFavorite] = useState(false)
-  const [rotation] = useState(() => Math.random() * 6 - 3) // Random rotation between -3 and 3 degrees
-  const [hover, setHover] = useState(false)
+export default function JournalEntry({
+  entry,
+  onEdit,
+  onDelete,
+}: JournalEntryProps) {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [rotation] = useState(() => Math.random() * 6 - 3); // Random rotation between -3 and 3 degrees
+  const [hover, setHover] = useState(false);
 
   return (
     <Card
@@ -35,7 +39,7 @@ export default function JournalEntry({ entry, onEdit, onDelete }: JournalEntryPr
     >
       <div className="relative">
         <Image
-          src={entry.images[0] || "/placeholder.svg"}
+          src={entry.image || "/placeholder.svg"} // Use the single image property
           width={600}
           height={400}
           alt={entry.title}
@@ -46,7 +50,11 @@ export default function JournalEntry({ entry, onEdit, onDelete }: JournalEntryPr
           className="absolute top-2 right-2 p-1.5 bg-[#1e1916]/80 rounded-full shadow-inner cursor-pointer hover:bg-amber-900 backdrop-blur-sm"
           onClick={() => setIsFavorite(!isFavorite)}
         >
-          <Heart className={`w-4 h-4 ${isFavorite ? "fill-red-500 text-red-500" : "text-amber-400"}`} />
+          <Heart
+            className={`w-4 h-4 ${
+              isFavorite ? "fill-red-500 text-red-500" : "text-amber-400"
+            }`}
+          />
         </div>
 
         {/* Decorative tape */}
@@ -54,7 +62,9 @@ export default function JournalEntry({ entry, onEdit, onDelete }: JournalEntryPr
       </div>
 
       <CardContent className="p-4">
-        <h3 className="mb-2 text-xl font-bold text-amber-200 font-display tracking-wide">{entry.title}</h3>
+        <h3 className="mb-2 text-xl font-bold text-amber-200 font-display tracking-wide">
+          {entry.title}
+        </h3>
 
         <div className="flex flex-wrap gap-2 mb-3">
           <div className="flex items-center text-xs text-amber-300 font-handwriting">
@@ -67,7 +77,9 @@ export default function JournalEntry({ entry, onEdit, onDelete }: JournalEntryPr
           </div>
         </div>
 
-        <p className="mb-4 text-sm text-amber-200 font-handwriting">{entry.content}</p>
+        <p className="mb-4 text-sm text-amber-200 font-handwriting">
+          {entry.content}
+        </p>
 
         <div className="flex flex-wrap gap-1">
           {entry.tags.map((tag) => (
@@ -103,6 +115,5 @@ export default function JournalEntry({ entry, onEdit, onDelete }: JournalEntryPr
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
-

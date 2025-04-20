@@ -90,6 +90,8 @@ export default function LoginPage() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token); // Store the token in localStorage
+        // ← notify listeners (Navigation, etc.) to re-check auth
+        window.dispatchEvent(new Event("auth-changed"));
         router.push("/"); // Redirect to the dashboard or home page
       } else {
         alert(data.message || "Login failed");
@@ -111,7 +113,7 @@ export default function LoginPage() {
     });
 
     // 3. Redirect to login page
-    router.push("/login"); // Next.js client navigation :contentReference[oaicite:10]{index=10} :contentReference[oaicite:11]{index=11}
+    router.push("/"); // Next.js client navigation :contentReference[oaicite:10]{index=10} :contentReference[oaicite:11]{index=11}
   };
 
   return (
