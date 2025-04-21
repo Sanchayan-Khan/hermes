@@ -71,56 +71,56 @@ export default function PostcardPage() {
 
   const fetchSentPostcards = async () => {
     try {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       if (!token) {
-        router.push("/login")
-        return
+        router.push("/login");
+        return;
       }
 
-      const response = await fetch("/api/postcards/sent", {
+      const response = await fetch("https://backend-sample-9f8f.onrender.com/postcards/sent", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      if (!response.ok) throw new Error("Failed to fetch sent postcards")
-      const data = await response.json()
-      setSentPostcards(data)
+      });
+      if (!response.ok) throw new Error("Failed to fetch sent postcards");
+      const data = await response.json();
+      setSentPostcards(data);
     } catch (error) {
-      toast.error("Failed to load sent postcards")
+      toast.error("Failed to load sent postcards");
     }
-  }
+  };
 
   const fetchReceivedPostcards = async () => {
     try {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       if (!token) {
-        router.push("/login")
-        return
+        router.push("/login");
+        return;
       }
 
-      const response = await fetch("/api/postcards/received", {
+      const response = await fetch("https://backend-sample-9f8f.onrender.com/postcards/received", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      if (!response.ok) throw new Error("Failed to fetch received postcards")
-      const data = await response.json()
-      setReceivedPostcards(data)
+      });
+      if (!response.ok) throw new Error("Failed to fetch received postcards");
+      const data = await response.json();
+      setReceivedPostcards(data);
     } catch (error) {
-      toast.error("Failed to load received postcards")
+      toast.error("Failed to load received postcards");
     }
-  }
+  };
 
   const handleSendPostcard = async () => {
     try {
-      setIsLoading(true)
-      const token = localStorage.getItem("token")
+      setIsLoading(true);
+      const token = localStorage.getItem("token");
       if (!token) {
-        router.push("/login")
-        return
+        router.push("/login");
+        return;
       }
 
-      const response = await fetch("/api/postcards", {
+      const response = await fetch("https://backend-sample-9f8f.onrender.com/postcards", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,29 +134,29 @@ export default function PostcardPage() {
           stamp,
           recipient, // username of recipient
         }),
-      })
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || "Failed to send postcard")
+        const error = await response.json();
+        throw new Error(error.message || "Failed to send postcard");
       }
 
-      toast.success("Postcard sent successfully!")
-      setView("sent")
-      await fetchSentPostcards()
+      toast.success("Postcard sent successfully!");
+      setView("sent");
+      await fetchSentPostcards();
       // Reset form
-      setMessage("")
-      setRecipient("")
-      setLocation("")
-      setPostcardFront("/placeholder.svg?height=400&width=600")
-      setFont("handwritten")
-      setStamp("classic")
+      setMessage("");
+      setRecipient("");
+      setLocation("");
+      setPostcardFront("/placeholder.svg?height=400&width=600");
+      setFont("handwritten");
+      setStamp("classic");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to send postcard")
+      toast.error(error instanceof Error ? error.message : "Failed to send postcard");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped)
