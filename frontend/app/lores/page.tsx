@@ -39,7 +39,7 @@ export default function LoresPage() {
   useEffect(() => {
     const fetchLores = async () => {
       try {
-        const response = await fetch("https://backend-sample-9f8f.onrender.com/lores");
+        const response = await fetch("https://backend-sample-9f8f.onrender.com/lore");
         const data = await response.json();
         setLores(data);
       } catch (error) {
@@ -52,7 +52,7 @@ export default function LoresPage() {
 
   const handleCreateLore = async () => {
     try {
-      const response = await fetch("https://backend-sample-9f8f.onrender.com/lores", {
+      const response = await fetch("https://backend-sample-9f8f.onrender.com/lore", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
