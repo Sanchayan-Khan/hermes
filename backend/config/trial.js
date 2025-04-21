@@ -1,4 +1,3 @@
-// routes/lore.js
 const express = require("express");
 const { Op } = require("sequelize");
 const Lore = require("../models/Lore");
@@ -11,7 +10,7 @@ const router = express.Router();
 router.post("/", authenticateToken, async (req, res) => {
   try {
     const { title, location, type, content, image } = req.body;
-    
+
     // Validate required fields
     if (!title || !location || !type || !content || !image) {
       return res.status(400).json({
@@ -37,12 +36,7 @@ router.post("/", authenticateToken, async (req, res) => {
 
     // Include user data in response
     const loreWithUser = await Lore.findByPk(newLore.id, {
-      include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
-      ],
+      include: [{ model: User, attributes: ["username"] }],
     });
 
     res.status(201).json(loreWithUser);
@@ -56,39 +50,7 @@ router.post("/", authenticateToken, async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const lores = await Lore.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-    });
-    res.json(lores);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal server error." });
-  }
-});
-
-// Get lores by type
-router.get("/type/:type", async (req, res) => {
-  try {
-    const { type } = req.params;
-    if (!["Historical", "Cultural", "Folklore"].includes(type)) {
-      return res.status(400).json({
-        message: "Invalid type. Must be one of: Historical, Cultural, Folklore",
-      });
-    }
-
-    const lores = await Lore.findAll({
-      where: { type },
-      include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
-      ],
+      include: [{ model: User, attributes: ["username"] }],
       order: [["createdAt", "DESC"]],
     });
     res.json(lores);
@@ -102,12 +64,7 @@ router.get("/type/:type", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const lore = await Lore.findByPk(req.params.id, {
-      include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
-      ],
+      include: [{ model: User, attributes: ["username"] }],
     });
     if (!lore) {
       return res.status(404).json({ message: "Lore not found." });
@@ -133,7 +90,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
     }
 
     const { title, location, type, content, image } = req.body;
-    
+
     // Validate required fields
     if (!title || !location || !type || !content) {
       return res.status(400).json({
@@ -158,12 +115,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 
     // Get updated lore with user data
     const updatedLore = await Lore.findByPk(lore.id, {
-      include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
-      ],
+      include: [{ model: User, attributes: ["username"] }],
     });
 
     res.json(updatedLore);
@@ -188,33 +140,6 @@ router.delete("/:id", authenticateToken, async (req, res) => {
 
     await lore.destroy();
     res.json({ message: "Lore deleted successfully." });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal server error." });
-  }
-});
-
-// Search lores
-router.get("/search/:term", async (req, res) => {
-  try {
-    const { term } = req.params;
-    const lores = await Lore.findAll({
-      where: {
-        [Op.or]: [
-          { title: { [Op.iLike]: `%${term}%` } },
-          { location: { [Op.iLike]: `%${term}%` } },
-          { content: { [Op.iLike]: `%${term}%` } },
-        ],
-      },
-      include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-    });
-    res.json(lores);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error." });

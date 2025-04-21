@@ -22,6 +22,14 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://localhost:3000/:path*", // Replace with your backend URL
+      },
+    ];
+  },
 };
 
 mergeConfig(nextConfig, userConfig);
