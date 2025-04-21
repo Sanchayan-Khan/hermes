@@ -202,7 +202,10 @@ export default function JournalPage() {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      // Remove the deleted entry from both `entries` and `recentEntries`
       setEntries((prev) => prev.filter((e) => e.id !== id));
+      setRecentEntries((prev) => prev.filter((e) => e.id !== id));
     } catch (err) {
       console.error("Error deleting journal entry:", err);
     }
