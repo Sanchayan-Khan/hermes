@@ -17,7 +17,7 @@ interface Lore {
   content: string;
   image: string;
   userId: string;
-  User?: {
+  creator?: {
     username: string;
   };
 }
@@ -162,7 +162,14 @@ export default function LoresPage() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {myLores.map((lore) => (
             <Card key={lore.id} className="overflow-hidden">
-              {/* Render lore details */}
+              <CardHeader>
+                <h3 className="text-xl font-bold">{lore.title}</h3>
+                <p>{lore.location}</p>
+                <p className="text-sm text-gray-500">By: {lore.creator?.username || "Unknown"}</p>
+              </CardHeader>
+              <CardContent>
+                <p>{lore.content}</p>
+              </CardContent>
             </Card>
           ))}
         </div>
@@ -173,7 +180,14 @@ export default function LoresPage() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {othersLores.map((lore) => (
             <Card key={lore.id} className="overflow-hidden">
-              {/* Render lore details */}
+              <CardHeader>
+                <h3 className="text-xl font-bold">{lore.title}</h3>
+                <p>{lore.location}</p>
+                <p className="text-sm text-gray-500">By: {lore.creator?.username || "Unknown"}</p>
+              </CardHeader>
+              <CardContent>
+                <p>{lore.content}</p>
+              </CardContent>
             </Card>
           ))}
         </div>
