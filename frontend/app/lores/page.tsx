@@ -52,10 +52,12 @@ export default function LoresPage() {
 
   const handleCreateLore = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("https://backend-sample-9f8f.onrender.com/lore", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(newLore),
       });
