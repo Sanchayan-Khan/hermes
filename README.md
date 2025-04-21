@@ -136,7 +136,3 @@ Hermes uses a custom amber/brown theme with a vintage travel aesthetic. The UI i
 - Frontend: Deployed on Vercel
 - Backend: Deployed on Render
 - Database: PostgreSQL hosted on Render
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
