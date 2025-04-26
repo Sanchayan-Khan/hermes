@@ -329,7 +329,7 @@ export default function PostcardPage() {
               className={`transition-all duration-500 delay-100 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
             >
               <Tabs defaultValue="content" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-6 bg-amber-900/30">
+                <TabsList className="grid w-full grid-cols-2 mb-6 bg-amber-900/30">
                   <TabsTrigger
                     value="content"
                     className="data-[state=active]:bg-amber-700 data-[state=active]:text-amber-100 data-[state=active]:shadow-inner font-medium"
@@ -341,12 +341,6 @@ export default function PostcardPage() {
                     className="data-[state=active]:bg-amber-700 data-[state=active]:text-amber-100 data-[state=active]:shadow-inner font-medium"
                   >
                     Design
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="recipient"
-                    className="data-[state=active]:bg-amber-700 data-[state=active]:text-amber-100 data-[state=active]:shadow-inner font-medium"
-                  >
-                    Recipient
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value="content" className="space-y-4">
@@ -377,12 +371,12 @@ export default function PostcardPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="sender" className="flex items-center gap-1 text-amber-200">
+                    <Label htmlFor="recipient" className="flex items-center gap-1 text-amber-200">
                       <Mail className="w-4 h-4" />
-                      From
+                      Recipient
                     </Label>
                     <Input
-                      id="sender"
+                      id="recipient"
                       value={recipient}
                       onChange={(e) => setRecipient(e.target.value)}
                       placeholder="Recipient's Name"
@@ -396,44 +390,12 @@ export default function PostcardPage() {
                       <ImageIcon className="w-4 h-4" />
                       Background Image
                     </Label>
-                    <div className="grid grid-cols-3 gap-2">
-                      <button
-                        onClick={() => setPostcardFront("/placeholder.svg?height=400&width=600")}
-                        className="overflow-hidden border-2 rounded-md aspect-video border-amber-600/30 hover:border-amber-500 shadow-md hover:shadow-amber-700/20 transition-all"
-                      >
-                        <Image
-                          src="/placeholder.svg?height=400&width=600"
-                          width={100}
-                          height={60}
-                          alt="Background option 1"
-                          className="object-cover w-full h-full"
-                        />
-                      </button>
-                      <button
-                        onClick={() => setPostcardFront("/placeholder.svg?height=400&width=600")}
-                        className="overflow-hidden border-2 rounded-md aspect-video border-amber-600/30 hover:border-amber-500 shadow-md hover:shadow-amber-700/20 transition-all"
-                      >
-                        <Image
-                          src="/placeholder.svg?height=400&width=600"
-                          width={100}
-                          height={60}
-                          alt="Background option 2"
-                          className="object-cover w-full h-full"
-                        />
-                      </button>
-                      <button
-                        onClick={() => setPostcardFront("/placeholder.svg?height=400&width=600")}
-                        className="overflow-hidden border-2 rounded-md aspect-video border-amber-600/30 hover:border-amber-500 shadow-md hover:shadow-amber-700/20 transition-all"
-                      >
-                        <Image
-                          src="/placeholder.svg?height=400&width=600"
-                          width={100}
-                          height={60}
-                          alt="Background option 3"
-                          className="object-cover w-full h-full"
-                        />
-                      </button>
-                    </div>
+                    <Input
+                      value={postcardFront}
+                      onChange={(e) => setPostcardFront(e.target.value)}
+                      placeholder="Enter image URL"
+                      className="border-amber-700/50 bg-amber-900/20 text-amber-100 placeholder:text-amber-500/50"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="font" className="flex items-center gap-1 text-amber-200">
@@ -481,21 +443,6 @@ export default function PostcardPage() {
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-                </TabsContent>
-                <TabsContent value="recipient" className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="recipient" className="flex items-center gap-1 text-amber-200">
-                      <Mail className="w-4 h-4" />
-                      Recipient
-                    </Label>
-                    <Input
-                      id="recipient"
-                      value={recipient}
-                      onChange={(e) => setRecipient(e.target.value)}
-                      placeholder="Recipient's Name"
-                      className="border-amber-700/50 bg-amber-900/20 text-amber-100 placeholder:text-amber-500/50 font-handwriting"
-                    />
                   </div>
                   <div className="p-4 border rounded-md border-amber-600/30 bg-amber-900/20 shadow-inner">
                     <h4 className="mb-2 font-medium text-amber-100 font-display">Delivery Options</h4>
