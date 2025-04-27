@@ -444,40 +444,6 @@ export default function PostcardPage() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="p-4 border rounded-md border-amber-600/30 bg-amber-900/20 shadow-inner">
-                    <h4 className="mb-2 font-medium text-amber-100 font-display">Delivery Options</h4>
-                    <div className="space-y-2">
-                      <div className="flex items-center">
-                        <input type="radio" id="digital" name="delivery" className="mr-2 accent-amber-500" defaultChecked />
-                        <Label htmlFor="digital" className="text-sm text-amber-200">
-                          Digital Delivery (Email)
-                        </Label>
-                      </div>
-                      <div className="flex items-center">
-                        <input type="radio" id="print" name="delivery" className="mr-2 accent-amber-500" />
-                        <Label htmlFor="print" className="text-sm text-amber-200">
-                          Print & Mail (Additional fee)
-                        </Label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 border rounded-md border-amber-600/30 bg-amber-900/20 shadow-inner">
-                    <h4 className="mb-2 font-medium text-amber-100 font-display">Schedule Delivery</h4>
-                    <div className="space-y-2">
-                      <div className="flex items-center">
-                        <input type="radio" id="now" name="schedule" className="mr-2 accent-amber-500" defaultChecked />
-                        <Label htmlFor="now" className="text-sm text-amber-200">
-                          Send Now
-                        </Label>
-                      </div>
-                      <div className="flex items-center">
-                        <input type="radio" id="later" name="schedule" className="mr-2 accent-amber-500" />
-                        <Label htmlFor="later" className="text-sm text-amber-200">
-                          Schedule for Later
-                        </Label>
-                      </div>
-                    </div>
-                  </div>
                 </TabsContent>
               </Tabs>
             </div>
